@@ -26,17 +26,15 @@ contract DGID is
     function initialize(
         string memory name,
         string memory symbol,
-        string memory version,
-        string calldata govRoleString
+        string memory version
     ) public initializer {
-        address govRole = address(
-            bytes20(bytes32(keccak256(abi.encodePacked(govRoleString))))
-        );
         __ERC4973_init(name, symbol, version);
         __AccessControl_init();
+    }
 
-        _setupRole(DEFAULT_ADMIN_ROLE, govRole);
-        _setupRole(GOVERNANCE_ROLE, govRole);
+    function __initialize_unchained(address _admin) internal initializer {
+        _setupRole(GOVERNANCE_ROLE, _admin);
+        _setupRole(DEFAULT_ADMIN_ROLE, _admin);
     }
 
     function _setURI(uint256 tokenId, string memory customURI) external {

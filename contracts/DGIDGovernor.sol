@@ -29,9 +29,6 @@ contract DGIDGovernor is
         __GovernorVotesQuorumFraction_init(67);
     }
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
-
     function votingDelay()
         public
         view
