@@ -77,7 +77,7 @@ contract ERC4973 is
 
     function _governanceValue(
         address owner
-    ) public view virtual returns (uint16) {
+    ) internal view virtual returns (uint16) {
         require(
             owner != address(0),
             "governanceValue: address zero is not a valid owner"
@@ -120,7 +120,7 @@ contract ERC4973 is
             governanceIncrement;
     }
 
-    function _getTotalGovernance() public view virtual returns (uint256) {
+    function _getTotalGovernance() internal view virtual returns (uint256) {
         return _totalGovernance;
     }
 

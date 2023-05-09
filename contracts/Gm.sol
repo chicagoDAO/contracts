@@ -10,15 +10,15 @@ contract Gm {
         gms = 0;
     }
 
-    function getGms() public view returns (uint) {
+    function getGms() external view returns (uint) {
         return gms;
     }
 
-    function getCode() public pure returns (string memory) {
+    function getCode() external pure returns (string memory) {
         return "0x0EdD3EE977bDdf18eAa3548eC8544B78c78F40e5";
     }
 
-    function doGm(string memory name) public {
+    function doGm(string memory name) external {
         require(bytes(name).length <= 100, "Input string too long");
         bytes32 nameHash = keccak256(abi.encodePacked(name));
         require(!nameExists[nameHash], "Name already exists");

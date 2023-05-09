@@ -6,35 +6,75 @@ import "./utils/ERC4973Votes.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-contract DGID is Initializable, ERC4973, ERC4973Votes, OwnableUpgradeable {
+contract DGID is
+    Initializable,
+    AccessControlUpgradeable,
+    ERC4973,
+    ERC4973Votes
+{
     using Counters for Counters.Counter;
     Counters.Counter private tokenIds;
+    // soon
+    bytes32 public constant CONTRACT_ROLE = keccak256("CONTRACT_ROLE");
+    bytes32 public constant GOVERNANCE_ROLE = keccak256("GOVERNANCE_ROLE");
+
     mapping(address => uint256) private addrToTokenId;
 
     function initialize(
         string memory name,
         string memory symbol,
-        string memory version
+        string memory version,
+        string calldata govRoleString
     ) public initializer {
+        address govRole = address(
+            bytes20(bytes32(keccak256(abi.encodePacked(govRoleString))))
+        );
         __ERC4973_init(name, symbol, version);
+        __AccessControl_init();
+
+        _setupRole(DEFAULT_ADMIN_ROLE, govRole);
+        _setupRole(GOVERNANCE_ROLE, govRole);
     }
 
-    function setURI(uint256 tokenId, string memory customURI) public onlyOwner {
+    function _setURI(uint256 tokenId, string memory customURI) external {
+        require(
+            hasRole(GOVERNANCE_ROLE, msg.sender),
+            "Not authorized to set URI"
+        );
         _setTokenURI(tokenId, customURI);
     }
 
     function setGovernanceValue(
         address to,
         uint16 governanceIncrement
-    ) public onlyOwner {
+    ) external {
+        require(
+            hasRole(GOVERNANCE_ROLE, msg.sender),
+            "Not authorized to set governance"
+        );
         _setGovernanceValue(to, governanceIncrement);
+    }
+
+    function supportsInterface(
+        bytes4 interfaceId
+    )
+        public
+        view
+        virtual
+        override(ERC4973, AccessControlUpgradeable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 
     function mint(
         address to,
         string memory tokenURI
-    ) public onlyOwner returns (uint256) {
+    ) external returns (uint256) {
+        require(hasRole(GOVERNANCE_ROLE, msg.sender), "Not authorized to mint");
         tokenIds.increment();
         addrToTokenId[to] = tokenIds.current();
         uint256 newItemId = tokenIds.current();
@@ -44,19 +84,20 @@ contract DGID is Initializable, ERC4973, ERC4973Votes, OwnableUpgradeable {
 
     function viewGovernance(
         address owner
-    ) internal view virtual returns (uint16) {
+    ) external view virtual returns (uint16) {
         return _governanceValue(owner);
     }
 
-    function viewTotalGovernance() internal view virtual returns (uint256) {
+    function viewTotalGovernance() external view virtual returns (uint256) {
         return _getTotalGovernance();
     }
 
-    function viewTokenID(address owner) public view returns (uint256) {
+    function viewTokenID(address owner) external view returns (uint256) {
         return addrToTokenId[owner];
     }
 
-    function burn(uint256 tokenId) public onlyOwner {
+    function burn(uint256 tokenId) external {
+        require(hasRole(GOVERNANCE_ROLE, msg.sender), "Not authorized to burn");
         _burn(tokenId);
     }
 }

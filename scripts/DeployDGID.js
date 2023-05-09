@@ -1,14 +1,21 @@
-// open main asynchronous function will handle deployment
+const multisig = "0x0EdD3EE977bDdf18eAa3548eC8544B78c78F40e5";
 const main = async () => {
   const { ethers, upgrades } = require("hardhat");
   try {
-    // use hre object that allows us to pass the name of our contract to getContractFactory
-    const DGID = await ethers.getContractFactory(
-      "DGID"
-    );
-    console.log(upgrades)
+    const gas = await ethers.provider.getGasPrice();
 
-    const dgid = await upgrades.deployProxy(DGID, ["DGID", "ChicagoDAO", "1.0.0"]);
+    // use hre object that allows us to pass the name of our contract to getContractFactory
+    const DGID = await ethers.getContractFactory("DGID");
+    console.log("gas price", gas);
+
+    const dgid = await upgrades.deployProxy(
+      DGID,
+      ["DGID", "ChicagoDAO", "2.0.0", "0x0EdD3EE977bDdf18eAa3548eC8544B78c78F40e5"],
+      {
+        gasPrice: gas, constructorArgs: ["DGID", "ChicagoDAO", "1.0.0", "0x0EdD3EE977bDdf18eAa3548eC8544B78c78F40e5"],
+        initializer: "initialize"
+      },
+    );
 
     // create variable to allow us to use the deploy function of getContractFactory
     console.log("DGID deploying...");
