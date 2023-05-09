@@ -226,6 +226,4 @@ contract ERC4973 is
 
         emit Transfer(owner, address(0), tokenId);
     }
-
-    uint256[45] private __gap;
 }

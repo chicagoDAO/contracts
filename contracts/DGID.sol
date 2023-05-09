@@ -30,6 +30,7 @@ contract DGID is
     ) public initializer {
         __ERC4973_init(name, symbol, version);
         __AccessControl_init();
+        __initialize_unchained(msg.sender);
     }
 
     function __initialize_unchained(address _admin) internal initializer {

@@ -5,11 +5,7 @@ const main = async () => {
 
     const DGID = await ethers.getContractFactory("DGID");
     console.log("DGID deploying...");
-    const dgid = await upgrades.deployProxy(
-      DGID,
-      ["DGID", "ChicagoDAO", "1.0.0"],
-      { initializer: "initialize" }
-    );
+    const dgid = await upgrades.deployProxy(DGID, ["DGID", "ChicagoDAO", "1.0.1"], { initializer: "initialize" });
     console.log("Contract deployed to:", dgid.address);
     process.exit(0);
 
