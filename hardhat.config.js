@@ -25,10 +25,6 @@ module.exports = {
     matic: {
       url: "https://polygon-rpc.com/",
       accounts: [process.env.WALLET_PRIVATE_KEY],
-      // gasPrice: 2000000000,
-      // gas: 706629190468,
-
-
     },
   },
   etherscan: {
