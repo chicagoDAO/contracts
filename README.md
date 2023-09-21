@@ -1,8 +1,8 @@
 # ChicagoDAO Contracts
 
-Frontend at [https://governance.chicagodao.io](https://governance.chicagodao.io/)
-Website at [https://chicagodao.io](https://chicagodao.io/)
-Job board at [https://chicagodao.io/auth](https://chicagodao.io/auth)
+Governance Frontend at [https://governance.chicagodao.io](https://governance.chicagodao.io/) <br/>
+Website at [https://chicagodao.io](https://chicagodao.io/) <br/>
+Job board at [https://chicagodao.io/auth](https://chicagodao.io/auth) <br/>
 
 <b>DGID:</b> [0xfE05d7De58d477A723A74DB474D9C9e988e00c3a](https://polygonscan.com/address/0xfE05d7De58d477A723A74DB474D9C9e988e00c3a)<br/>
 <b>DGID Proxy:</b> [0x394B9e988A1686a7aFaD6ae3DF29aa3471C2710a](https://polygonscan.com/address/0x394B9e988A1686a7aFaD6ae3DF29aa3471C2710a)<br/>
